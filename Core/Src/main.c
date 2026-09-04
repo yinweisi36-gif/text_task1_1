@@ -100,34 +100,29 @@ void triangle_wave_generate(void)
 /* USER CODE BEGIN 0 */
 uint8_t Parse_Frame(uint8_t *buf, uint16_t len)
 {
-	uint16_t i = 0;
-	uint8_t  frame_len;
-	while(i < len)
+	if(len < 3)
 	{
-		if(buf[i] == FRAME_HEAD)
-		{
-			break;
-		}
-		i++;
+		return -1;
 	}
-	if(i >= len)
+	if(buf[0] != FRAME_HEAD)
 	{
-		return 1;
+		return -2;
 	}
-	if(i+3+DATA_LEN >len )
+	if(buf[1] != DATA_LEN)
 	{
-		return 4;
+		return -3;
 	}
-	frame_len = buf[i+1];
-	if (frame_len != (1 + DATA_LEN))
+	if(buf[2] != FUNC_CODE)
 	{
-		return 2;
+		return -4;
 	}
-	if (buf[i + 2] != FUNC_CODE)
+	if(len < FRAME_LEN)
 	{
-		return 3;
+		return -1;
 	}
-	memcpy(rec_float, &buf[i + 3], DATA_LEN);
+	memcmp(&rec_float[0],&buf[3],4);
+	memcmp(&rec_float[1],&buf[7],4);
+	memcmp(&rec_float[2],&buf[11],4);
 	return 0;
 }
 
@@ -217,32 +212,12 @@ int main(void)
 		triangle_wave_generate();
 		BSP_UART_SendFloat(targ_pos );
 		HAL_Delay(100);
-		/*
-		static uint16_t last_print = 0;
-		if (HAL_GetTick() - last_print >= 200)
-		{
-			last_print = HAL_GetTick();
-			BSP_UART_SendFloat(targ_pos );
-		}
-		*/
-
+		
 		if(rx_flag == 1)
 		{
-			uint8_t err = Parse_Frame(rx_buffer, rx_len);
 			rx_flag = 0;
-			if (err == 0)
-			{
-			}
-			else
-			{
-			}
+			HAL_UART_Transmit(&huart1, (uint8_t*)"OK\r\n", sizeof("OK\r\n")-1, HAL_MAX_DELAY);
 		}
-		static uint32_t last_tick = 0;
-    if (HAL_GetTick() - last_tick > 1000)
-    {
-        last_tick = HAL_GetTick();
-        Send_Frame(1.23f, 4.56f, 7.89f);   
-    }
 		
   }
   /* USER CODE END 3 */
