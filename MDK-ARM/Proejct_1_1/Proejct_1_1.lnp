@@ -1,0 +1,27 @@
+--cpu Cortex-M3
+"proejct_1_1\startup_stm32f103xb.o"
+"proejct_1_1\proejct_1_1.o"
+"proejct_1_1\bsp_uart.o"
+"proejct_1_1\main.o"
+"proejct_1_1\gpio.o"
+"proejct_1_1\dma.o"
+"proejct_1_1\usart.o"
+"proejct_1_1\stm32f1xx_it.o"
+"proejct_1_1\stm32f1xx_hal_msp.o"
+"proejct_1_1\stm32f1xx_hal_gpio_ex.o"
+"proejct_1_1\stm32f1xx_hal_uart.o"
+"proejct_1_1\stm32f1xx_hal.o"
+"proejct_1_1\stm32f1xx_hal_rcc.o"
+"proejct_1_1\stm32f1xx_hal_rcc_ex.o"
+"proejct_1_1\stm32f1xx_hal_gpio.o"
+"proejct_1_1\stm32f1xx_hal_dma.o"
+"proejct_1_1\stm32f1xx_hal_cortex.o"
+"proejct_1_1\stm32f1xx_hal_pwr.o"
+"proejct_1_1\stm32f1xx_hal_flash.o"
+"proejct_1_1\stm32f1xx_hal_flash_ex.o"
+"proejct_1_1\stm32f1xx_hal_exti.o"
+"proejct_1_1\system_stm32f1xx.o"
+--strict --scatter "Proejct_1_1\Proejct_1_1.sct"
+--summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
+--info sizes --info totals --info unused --info veneers
+--list "Proejct_1_1.map" -o Proejct_1_1\Proejct_1_1.axf
