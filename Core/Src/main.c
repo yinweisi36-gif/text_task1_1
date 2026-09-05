@@ -197,7 +197,7 @@ int main(void)
 	HAL_UART_Receive_DMA(&huart1, rx_buffer, sizeof(rx_buffer));
 	__HAL_UART_ENABLE_IT(&huart1, UART_IT_IDLE);
 	
-	//HAL_UART_Transmit(&huart1, (uint8_t*)"Hello\r\n", 7, 100);
+	LOG_INFO("targ_pos = %.2f", 3.14f);
 
   /* USER CODE END 2 */
 
