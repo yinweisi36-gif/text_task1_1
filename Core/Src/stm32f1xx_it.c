@@ -230,7 +230,7 @@ void USART1_IRQHandler(void)
 		rx_len = sizeof(rx_buffer) - remain;
 		rx_flag = 1;
 		HAL_UART_Receive_DMA(&huart1, rx_buffer, sizeof(rx_buffer));
-		//__HAL_UART_ENABLE_IT(&huart1, UART_IT_IDLE);
+		__HAL_UART_ENABLE_IT(&huart1, UART_IT_IDLE);
 	}
   /* USER CODE END USART1_IRQn 0 */
   HAL_UART_IRQHandler(&huart1);

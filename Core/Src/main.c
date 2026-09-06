@@ -102,27 +102,27 @@ uint8_t Parse_Frame(uint8_t *buf, uint16_t len)
 {
 	if(len < 3)
 	{
-		return -1;
+		return 1;
 	}
 	if(buf[0] != FRAME_HEAD)
 	{
-		return -2;
+		return 2;
 	}
-	if(buf[1] != DATA_LEN)
+	if(buf[1] != DATA_LEN + 1)
 	{
-		return -3;
+		return 3;
 	}
 	if(buf[2] != FUNC_CODE)
 	{
-		return -4;
+		return 4;
 	}
 	if(len < FRAME_LEN)
 	{
-		return -1;
+		return 1;
 	}
-	memcmp(&rec_float[0],&buf[3],4);
-	memcmp(&rec_float[1],&buf[7],4);
-	memcmp(&rec_float[2],&buf[11],4);
+	memcpy(&rec_float[0],&buf[3],4);
+	memcpy(&rec_float[1],&buf[7],4);
+	memcpy(&rec_float[2],&buf[11],4);
 	return 0;
 }
 
@@ -196,8 +196,6 @@ int main(void)
   /* USER CODE BEGIN 2 */
 	HAL_UART_Receive_DMA(&huart1, rx_buffer, sizeof(rx_buffer));
 	__HAL_UART_ENABLE_IT(&huart1, UART_IT_IDLE);
-	
-	LOG_INFO("targ_pos = %.2f", 3.14f);
 
   /* USER CODE END 2 */
 
@@ -210,13 +208,16 @@ int main(void)
     /* USER CODE BEGIN 3 */
 		/*三角波*/
 		triangle_wave_generate();
-		BSP_UART_SendFloat(targ_pos );
+		BSP_UART_SendFloat(targ_pos);
 		HAL_Delay(100);
 		
 		if(rx_flag == 1)
 		{
 			rx_flag = 0;
-			HAL_UART_Transmit(&huart1, (uint8_t*)"OK\r\n", sizeof("OK\r\n")-1, HAL_MAX_DELAY);
+			if(Parse_Frame(rx_buffer,rx_len) == 0)
+			{
+				LOG_INFO("rx_buffer = %.2f,%.2f,%.2f", rec_float[0],rec_float[1],rec_float[2]);
+			}
 		}
 		
   }
